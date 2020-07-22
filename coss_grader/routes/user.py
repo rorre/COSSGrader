@@ -53,6 +53,8 @@ def register():
     form = RegisterForm()
     form.classroom.choices = [("", "Classroom")]
     for c in ClassEnum:
+        if c.value == 99:
+            continue
         form.classroom.choices.append((c.value, c.name.replace("_", " ")))
 
     if form.validate_on_submit():
