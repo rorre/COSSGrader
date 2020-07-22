@@ -1,0 +1,11 @@
+{% import 'macros.html' as macros %}
+{% extends "layout.html" %}
+
+{% block content %}
+<form class="ui form" method="POST">
+    {{ form.csrf_token }}
+    {{ macros.render_field(form.username) }}
+    {{ macros.render_field(form.password) }}
+    {{ form.submit(class_="ui button") }}
+</form>
+{% endblock %}

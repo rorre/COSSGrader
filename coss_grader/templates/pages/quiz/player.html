@@ -1,0 +1,67 @@
+{% import 'macros.html' as macros %}
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="ui huge blue label" data-time-left="{{ time_left }}" id="countdown">...</div>
+<div class="ui divider"></div>
+
+<div class="ui attached segment">
+    <div class="ui horizontal list" id="q-numbers">
+        {% for q in quiz.questions %}
+        <div class="item">
+            <button class="ui button qnum" data-tab="{{ loop.index0 }}">{{ loop.index }}</button>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+<div class="ui bottom attached icon buttons">
+    <button class="ui labeled icon green button" id="donebtn">
+        <i class="check icon"></i>
+        Finish
+    </button>
+</div>
+
+<div class="ui divider"></div>
+
+{% for q in quiz.questions %}
+{% set i = loop.index0 %}
+<form class="ui segment tab" data-tab="{{ loop.index0 }}">
+    <p><b>Question #{{ loop.index }}</b></p>
+    <p>{{ q.question | md | safe }}</p>
+
+    <div class="ui divider"></div>
+
+    <div class="ui form">
+        <input name="is_essay" value="{{ q.is_essay }}" type="hidden">
+        {% if q.is_essay %}
+        <div class="field">
+            <label>Answer</label>
+            <textarea name="answer">{% if play.options and play.options[i] %}{{ play.options[i] }}{% endif %}</textarea>
+        </div>
+        {% else %}
+        {% for opt in q.options %}
+        <div class="field">
+            {% if play.options %}
+                {% set picked_option = play.options[i] | int %}
+            {% else %}
+                {% set picked_option = -1 %}
+            {% endif %}
+
+            {% if picked_option == loop.index0 %}
+            <div class="ui radio checkbox checked">
+                <input type="radio" name="answer" value="{{ loop.index0 }}" class="hidden" checked>
+            {% else %}
+            <div class="ui radio checkbox">
+                <input type="radio" name="answer" value="{{ loop.index0 }}" class="hidden">
+            {% endif %}
+                <label>{{ opt }}</label>
+            </div>
+        </div>
+        {% endfor %}
+        {% endif %}
+    </div>
+</form>
+{% endfor %}
+<input id="quiz_id" name="quiz_id" value="{{ quiz.id }}" type="hidden">
+<input id="play_id" name="play_id" value="{{ play.id }}" type="hidden">
+{% endblock %}

@@ -1,0 +1,65 @@
+{% macro render_field(field, disabled=False, class=None) %}
+<div class="field">
+    {{ field.label }}
+    {{ field(placeholder=field.label.text, readonly=disabled, class=class) }}
+    {% if field.errors %}
+    <div class="ui negative message">
+        <div class="header">
+            There is error on your input.
+        </div>
+        <ul class="list">
+            {% for error in field.errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+</div>
+{% endmacro %}
+
+{% macro render_checkbox(field) %}
+<div class="field">
+    <div class="ui checkbox">
+        {{ field(placeholder=field.label.text) }}
+        {{ field.label }}
+        {% if field.errors %}
+        <div class="ui negative message">
+            <div class="header">
+                There is error on your input.
+            </div>
+            <ul class="list">
+                {% for error in field.errors %}
+                <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+            </p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endmacro %}
+
+{% macro render_calendar(field) %}
+<div class="field">
+    {{ field.label }}
+    <div class="ui calendar">
+        <div class="ui input left icon">
+            <i class="calendar icon"></i>
+            {{ field(placeholder=field.label.text) }}
+        </div>
+    </div>
+    {% if field.errors %}
+    <div class="ui negative message">
+        <div class="header">
+            There is error on your input.
+        </div>
+        <ul class="list">
+            {% for error in field.errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+        </p>
+    </div>
+    {% endif %}
+</div>
+{% endmacro %}

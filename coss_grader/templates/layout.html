@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>COSS Grader</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="title" content="BN Requests">
+    <meta name="description" content="Situs grader untuk COSS SMAN 3 Depok.">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://coss.rorre.xyz/">
+    <meta property="og:title" content="COSS Grader">
+    <meta property="og:description" content="Situs grader untuk COSS SMAN 3 Depok.">
+
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://coss.rorre.xyz/">
+    <meta property="twitter:title" content="COSS Grader">
+    <meta property="twitter:description" content="Situs grader untuk COSS SMAN 3 Depok.">
+    <script src="/js/jquery.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/semantic.css">
+    <script src="/js/semantic.js"></script>
+    <script src="/js/axios.js"></script>
+    <script src="/js/jquery.timeago.js"></script>
+    <style type="text/css">
+        body {
+            background-color: #FFFFFF;
+        }
+
+        .ui.menu .item img.logo {
+            margin-right: 1.5em;
+        }
+
+        .main.container {
+            margin-left: 1.5em;
+            margin-top: 5em;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="ui stackable inverted menu">
+        <div class="ui container">
+            <a href="{{ url_for('home.index') }}" class="header item">COSS</a>
+            <a href="{{ url_for('quiz.listing') }}" class="item">Quiz list</a>
+            {% if current_user.is_authenticated %}
+            {% if current_user.is_admin %}
+            <a href="{{ url_for('quiz.new') }}" class="item">New quiz</a>
+            {% endif %}
+            <a href="{{ url_for('quiz.mine_result') }}" class="item">My results</a>
+            <a href="{{ url_for('user.logout') }}" class="item">Logout</a>
+            {% else %}
+            <a href="{{ url_for('user.login') }}" class="item">Login</a>
+            <a href="{{ url_for('user.register') }}" class="item">Register</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="ui main container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+
+        {% for category, message in messages %}
+        <div class="ui {{ category }} message">
+            {{ message }}
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        <h2 class="ui header">
+            {{ title }}
+            {% if subtitle %}
+            <div class="sub header">{{ subtitle }}</div>
+            {% endif %}
+        </h2>
+        <div class="ui divider"></div>
+
+        {% block content %}{% endblock %}
+    </div>
+
+    <div class="ui aligned grid">
+        {% if prev_url %}
+        <div class="left floated six wide column">
+            <a class="ui labeled icon button" href="{{ prev_url }}">
+                <i class="left arrow icon"></i>
+                Previous
+            </a>
+        </div>
+        {% endif %}
+
+        {% if next_url %}
+        {% if prev_url %}
+        <div class="right aligned six wide column">
+            {% else %}
+            <div class="right aligned column">
+                {% endif %}
+                <a class="ui right labeled icon button" href="{{ next_url }}">
+                    <i class="right arrow icon"></i>
+                    Next
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    {% if scripts %}
+    {% for name in scripts %}
+    <script src="/js/{{ name }}"></script>
+    {% endfor %}
+    {% endif %}
+</body>
+
+</html>

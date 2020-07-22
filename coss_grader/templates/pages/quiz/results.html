@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<table class="ui celled table">
+    <thead>
+        <tr>
+            <th class="twelve wide">Name</th>
+            <th class="six wide">Score</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for result in results %}
+        {% set score = result.scores | sum %}
+        {% set len = result.options | length %}
+        {% set percentage = score * 100 / len %}
+        <tr>
+            <td>{{ result.owner.name }} ({{ result.owner.classroom.name | replace("_", " ") }})</td>
+            <td>{{ percentage }}
+                {% if current_user.is_admin %}
+                <a href="{{ url_for('quiz.judge', play_id=result.id) }}" class="ui button">Judge</a>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

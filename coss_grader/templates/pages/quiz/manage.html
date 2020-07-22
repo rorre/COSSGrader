@@ -1,0 +1,14 @@
+{% import 'macros.html' as macros %}
+{% extends "layout.html" %}
+
+{% block content %}
+<form class="ui form" method="POST">
+    {{ form.csrf_token }}
+    {{ macros.render_field(form.name) }}
+    {{ macros.render_field(form.info) }}
+    {{ macros.render_calendar(form.open_time) }}
+    {{ macros.render_calendar(form.close_time) }}
+    {{ macros.render_checkbox(form.show_results) }}
+    {{ form.submit(class_="ui button") }}
+</form>
+{% endblock %}

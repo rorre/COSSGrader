@@ -1,0 +1,81 @@
+{% import 'macros.html' as macros %}
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="ui segment">
+    <h4 class="ui header">Quiz metadata</h4>
+    <div class="ui form" id="metadata_form">
+        <div class="field">
+            <label>Title</label>
+            <input type="text" name="title">
+        </div>
+
+        <div class="field">
+            <label>Info</label>
+            <textarea rows="4" name="info"></textarea>
+        </div>
+    </div>
+    <div class="ui info message">
+        <p>Markdown styling is supported.</p>
+    </div>
+</div>
+
+<div class="ui divider"></div>
+
+<div class="ui attached segment">
+    <div class="ui horizontal list" id="q-numbers">
+        {% for q in quiz.questions %}
+        <div class="item">
+            <button class="ui button qnum" data-tab="{{ loop.index0 }}">{{ loop.index }}</button>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+<div class="ui three bottom attached icon buttons">
+    <button class="ui labeled icon blue button" id="addbtn">
+        <i class="plus icon"></i>
+        Add question
+    </button>
+    <button class="ui labeled icon red button" id="delbtn">
+        <i class="times icon"></i>
+        Delete current question
+    </button>
+    <button class="ui labeled icon green button" id="donebtn">
+        <i class="check icon"></i>
+        Finish
+    </button>
+</div>
+
+<div class="ui divider"></div>
+
+<div id="questions">
+    {% for q in quiz.questions %}
+    <form class="ui segment tab" data-tab="q-{{ loop.index0 }}">
+        {% set i = loop.index0 %}
+        <div class="ui form">
+            <div class="field">
+                <label>Question</label>
+                <textarea></textarea>
+            </div>
+            <div class="ui info message">
+                <p>Markdown styling is supported.</p>
+            </div>
+        </div>
+
+        <div class="ui divider"></div>
+
+        {% if q.is_essay %}
+        <div class="ui checked toggle checkbox">
+            <input type="checkbox" name="is_essay" class="hidden" checked="">
+            {% else %}
+            <div class="ui toggle checkbox">
+                <input type="checkbox" name="is_essay" class="hidden">
+                {% endif %}
+
+                <label>Answer is in form of essay.</label>
+            </div>
+            <div class="answer-editor" id="aq-{{ loop.index0 }}"></div>
+    </form>
+    {% endfor %}
+</div>
+{% endblock %}

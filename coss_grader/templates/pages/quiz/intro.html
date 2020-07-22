@@ -1,0 +1,20 @@
+{% import 'macros.html' as macros %}
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="ui info message">
+    <div class="header">
+        Information
+    </div>
+    {{ info | md | safe}}
+</div>
+
+<div class="ui divider"></div>
+
+<button onclick="window.history.back();" class="ui red button">
+    <i class="arrow left icon"></i> Go back
+</button>
+<a href="{{ url_for('quiz.play', quiz_id=quiz_id) }}" class="ui green button">
+    <i class="play icon"></i> Play
+</a>
+{% endblock %}

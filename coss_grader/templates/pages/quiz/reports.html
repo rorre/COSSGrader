@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<input type="hidden" id="quiz_id" name="quiz_id" value="{{ quiz_id }}">
+<table class="ui celled table">
+    <thead>
+        <tr>
+            <th class="two wide">When</th>
+            <th class="six wide">Name</th>
+            <th class="ten wide">Event</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for event in events %}
+        <tr data-id="{{ event.id }}">
+            <td><time class="timeago" datetime="{{ event.datetime.isoformat(timespec='seconds') }}Z"></time></td>
+            <td>{{ event.submission.owner.name }}</td>
+            <td>{{ event.event }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,99 @@
+{% import 'macros.html' as macros %}
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="ui attached segment">
+    <div class="ui horizontal list" id="q-numbers">
+        {% for q in quiz.questions %}
+        <div class="item">
+            <button class="ui button qnum" data-tab="{{ loop.index0 }}">{{ loop.index }}</button>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% if JUDGING_MODE %}
+<div class="ui bottom attached icon buttons">
+    <button class="ui labeled icon green button" id="donebtn">
+        <i class="check icon"></i>
+        Finish
+    </button>
+</div>
+{% endif %}
+
+<div class="ui divider"></div>
+
+{% for q in quiz.questions %}
+{% set i = loop.index0 %}
+<form class="ui segment tab" data-tab="{{ loop.index0 }}">
+    <p><b>Question #{{ loop.index }}</b></p>
+    <div class="ui form">
+        <div class="field">
+            <label>Score</label>
+            <input type="number" name="score" min="0" max="1" step="0.01" value="{{ play.scores[i] }}"
+            {% if not JUDGING_MODE %}
+            readonly
+            {% endif %}
+            >
+        </div>
+    </div>
+    <div class="ui divider"></div>
+
+    <p>{{ q.question | md | safe }}</p>
+
+    <div class="ui divider"></div>
+
+    <div class="ui form">
+        <input name="is_essay" value="{{ q.is_essay }}" type="hidden">
+        {% if q.is_essay %}
+        <div class="field">
+            <label>Answer</label>
+            <textarea name="answer">{% if play.options and play.options[i] %}{{ play.options[i] }}{% endif %}</textarea>
+        </div>
+        <div class="ui message">
+            <div class="header">Correct answer</div>
+            {{ q.answer }}
+        </div>
+        {% else %}
+        {% for opt in q.options %}
+        {% set correct_answer = q.answer | int %}
+        <div class="field">
+            {% if play.options %}
+                {% set picked_option = play.options[i] | int %}
+            {% else %}
+                {% set picked_option = -1 %}
+            {% endif %}
+
+            {% if picked_option == loop.index0 %}
+            <div class="ui radio checkbox checked">
+                <input type="radio" name="answer" value="{{ loop.index0 }}" class="hidden" checked>
+            {% else %}
+            <div class="ui radio checkbox">
+                <input type="radio" name="answer" value="{{ loop.index0 }}" class="hidden">
+            {% endif %}
+                <label>{{ opt }} {% if correct_answer == loop.index0 %}<i class="check icon"></i>{% endif %}</label>
+            </div>
+        </div>
+        {% endfor %}
+        {% endif %}
+    </div>
+</form>
+{% endfor %}
+{% if JUDGING_MODE %}
+<div class="ui negative message">
+    <div class="header">
+        Quiz Events
+    </div>
+    <ul>
+        {% if events %}
+            {% for e in events %}
+            <li> {{ e.datetime.isoformat(sep=" ") }} - {{ e.event }}</li>
+            {% endfor %}
+        {% else %}
+            <li>They're clean!</li>
+        {% endif %}
+    </ul>
+</div>
+{% endif %}
+<input id="quiz_id" name="quiz_id" value="{{ quiz.id }}" type="hidden">
+<input id="play_id" name="play_id" value="{{ play.id }}" type="hidden">
+{% endblock %}
