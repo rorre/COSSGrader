@@ -41,7 +41,7 @@
         {% else %}
         {% for opt in q.options %}
         <div class="field">
-            {% if play.options %}
+            {% if play.options and play.options[i] != "" %}
                 {% set picked_option = play.options[i] | int %}
             {% else %}
                 {% set picked_option = -1 %}
