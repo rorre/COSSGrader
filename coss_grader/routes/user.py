@@ -55,7 +55,7 @@ def register():
     for c in ClassEnum:
         if c.value == 99:
             continue
-        form.classroom.choices.append((c.value, c.name.replace("_", " ")))
+        form.classroom.choices.append((str(c.value), c.name.replace("_", " ")))
 
     if form.validate_on_submit():
         if not form.classroom.data.isnumeric():
@@ -65,7 +65,7 @@ def register():
         new_user = User(
             name=form.name.data,
             username=form.username.data.lower(),
-            email=form.email.data,
+            classroom_=int(form.classroom.data),
         )
         new_user.set_password(form.password.data)
         db.session.add(new_user)
