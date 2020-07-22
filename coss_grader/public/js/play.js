@@ -12,13 +12,31 @@ $(function () {
     $('.ui.radio.checkbox').checkbox()
 })
 
+function hasEmpty(arr) {
+    return arr.indexOf("") !== -1;
+}
 
 $("#donebtn").click(function () {
+    var answers = generateAnswerArray()
+    if (hasEmpty(answers)) {
+        $('.ui.basic.modal').modal({
+            closable: false,
+            onDeny: function () { },
+            onApprove: function () {
+                uploadAnswers(answers)
+            }
+        }).modal('show')
+    } else {
+        uploadAnswers(answers)
+    }
+})
+
+function uploadAnswers(answers) {
     $('body').toast({
         title: 'Uploading...',
     })
 
-    const data = { answers: generateAnswerArray() }
+    const data = { answers: answers }
     axios.post(`/api/play/${play_id}/finish`, data).then(function () {
         $('body').toast({
             title: "Done!",
@@ -49,7 +67,7 @@ $("#donebtn").click(function () {
             })
         }
     })
-})
+}
 
 $(".qnum").click(function () {
     $.tab('change tab', $(this).data("tab"))

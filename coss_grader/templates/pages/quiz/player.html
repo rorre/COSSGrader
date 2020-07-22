@@ -64,4 +64,24 @@
 {% endfor %}
 <input id="quiz_id" name="quiz_id" value="{{ quiz.id }}" type="hidden">
 <input id="play_id" name="play_id" value="{{ play.id }}" type="hidden">
+
+<div class="ui basic modal">
+    <div class="ui icon header">
+        <i class="exclamation icon"></i>
+        Warning
+    </div>
+    <div class="content">
+        <p>You haven't done all the questions, are you sure you want to finish?</p>
+    </div>
+    <div class="actions">
+        <div class="ui red basic cancel inverted button">
+            <i class="remove icon"></i>
+            No
+        </div>
+        <div class="ui green ok inverted button">
+            <i class="checkmark icon"></i>
+            Yes
+        </div>
+    </div>
+</div>
 {% endblock %}
