@@ -75,6 +75,8 @@ function startVisibilityWatch() {
     document.addEventListener(visibilityEventName, handleVisibilityChange, false);
 
     // extra event listeners for better behaviour
+    // Disabled for now as it is deemed too sensitive
+    /*
     document.addEventListener('focus', function () {
         handleVisibilityChange(true);
     }, false);
@@ -90,6 +92,7 @@ function startVisibilityWatch() {
     window.addEventListener('blur', function () {
         handleVisibilityChange(false);
     }, false);
+    */
 }
 
 // Logger
