@@ -115,5 +115,6 @@ function reportEvent(s) {
 
 // ---------
 $(function () {
+    reportEvent("Player starts quiz.")
     startVisibilityWatch()
 })
