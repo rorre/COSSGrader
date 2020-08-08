@@ -31,7 +31,7 @@ class RegisterForm(FlaskForm):
 @blueprint.route("/login", methods=["GET", "POST"])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for("index"))
+        return redirect(url_for("home.index"))
 
     form = LoginForm()
     if form.validate_on_submit():
@@ -48,7 +48,7 @@ def login():
 @blueprint.route("/register", methods=["GET", "POST"])
 def register():
     if current_user.is_authenticated:
-        return redirect(url_for("index"))
+        return redirect(url_for("home.index"))
 
     form = RegisterForm()
     form.classroom.choices = [("", "Classroom")]
